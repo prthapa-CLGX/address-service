@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  address-service:
+    image: address-service:0.0.1
+    ports:
+      - "9999:9999"
+    networks:
+      - poc-network
+    restart: on-failure
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/address_db
+
+networks:
+  poc-network:
+    external: true
