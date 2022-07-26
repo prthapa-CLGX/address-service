@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: address-service
+  liquibase:
+    enabled: true
+    drop-first: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    default-schema: public
+  datasource:
+    url: jdbc:postgresql://db:5432/address_db
+    username: robot
+    password: robotpass
+
+server:
+  port : 9999

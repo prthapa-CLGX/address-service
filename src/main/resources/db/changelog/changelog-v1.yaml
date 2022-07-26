@@ -1,0 +1,75 @@
+databaseChangeLog:
+  - preConditions:
+      - runningAs:
+          username: robot
+  - changeSet:
+      id: 1
+      author: Robot
+      changes:
+        - sql:
+            sql: DROP TABLE IF EXISTS "address"
+        - createTable:
+            tableName: address
+            columns:
+              - column:
+                  name: user_id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+              - column:
+                  name: street_name_and_number
+                  type: varchar(50)
+              - column:
+                  name: city
+                  type: varchar(50)
+              - column:
+                  name: state
+                  type: varchar(50)
+  - changeSet:
+      id: 2
+      author: Robot
+      changes:
+        - insert:
+            tableName: address
+            columns:
+              - column:
+                  name: user_id
+                  value: 1
+              - column:
+                  name: name
+                  value: "Alex Robinson"
+              - column:
+                  name: street_name_and_number
+                  value: "12 Robinson st"
+              - column:
+                  name: city
+                  value: "test-city"
+              - column:
+                  name: state
+                  value: "Tx"
+  - changeSet:
+      id: 3
+      author: Robot
+      changes:
+        - insert:
+            tableName: address
+            columns:
+              - column:
+                  name: user_id
+                  value: 2
+              - column:
+                  name: name
+                  value: "John Barnett"
+              - column:
+                  name: street_name_and_number
+                  value: "16 Barnett st"
+              - column:
+                  name: city
+                  value: "city"
+              - column:
+                  name: state
+                  value: "CA"
