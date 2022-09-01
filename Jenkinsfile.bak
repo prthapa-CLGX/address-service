@@ -1,7 +1,6 @@
 node {
     try {
         def serviceName = ""
-        def version = ""
         stage('SCM Checkout'){
             checkout scm
             checkout([$class: 'GitSCM',
@@ -29,9 +28,12 @@ node {
     } finally {
           stage('Clean Up and Notify') {
                sh('echo cleaning up tasks......')
-               version = sh(script: "./gradlew properties -q | grep \"version:\" | awk '{print \$2}'", returnStdout: true).trim()
-               serviceName = sh(script: "./gradlew properties -q | grep \"archivesBaseName:\" | awk '{print \$2}'", returnStdout: true).trim()
-               sh "echo If Build Fail: Service: $serviceName Version: $version build was unsuccessful... Sending email ............."
+                def version = sh(script: "./gradlew properties -q | grep \"version:\" | awk '{print \$2}'", returnStdout: true).trim()
+                serviceName = sh(script: "./gradlew properties -q | grep \"archivesBaseName:\" | awk '{print \$2}'", returnStdout: true).trim()
+                sh "echo Service: $serviceName Version: $version"
+               // remove the image for this service with multiple tags on this node
+               sh("docker images | grep localhost:5000/$serviceName | tr -s ' ' | cut -d ' ' -f 2 | xargs -I {} docker rmi localhost:5000/$serviceName:{}")
+               sh('echo "If Build Fail: Sending email ............."')
                //mail to: "me@testemail.com"
           }
     }
